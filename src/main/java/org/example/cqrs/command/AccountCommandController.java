@@ -1,4 +1,4 @@
-package org.example.cqrs.command.controller;
+package org.example.cqrs.command;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.example.cqrs.core.commands.CreateAccountCommand;
