@@ -1,6 +1,7 @@
 package org.example.cqrs.command;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.example.cqrs.core.commands.ActivateAccountCommand;
 import org.example.cqrs.core.commands.CreateAccountCommand;
 import org.example.cqrs.core.commands.CreditAccountCommand;
 import org.example.cqrs.core.dto.account.CreateAccountRequest;
@@ -14,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/command/account")
 public class AccountCommandController {
 
-    private CommandGateway commandGateway;
+    private final CommandGateway commandGateway;
 
     public AccountCommandController(CommandGateway commandGateway) {
         this.commandGateway = commandGateway;
@@ -25,6 +26,11 @@ public class AccountCommandController {
         return commandGateway.send(new CreateAccountCommand(
                 UUID.randomUUID().toString(), request.balance(), request.currency()
         ));
+    }
+
+    @PostMapping("/{id}/activate")
+    public CompletableFuture<Object> activateAccount(@PathVariable String id) {
+        return commandGateway.send(new ActivateAccountCommand(id));
     }
 
     @PostMapping("/credit")

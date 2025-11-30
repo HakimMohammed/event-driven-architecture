@@ -6,13 +6,16 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.example.cqrs.core.commands.ActivateAccountCommand;
 import org.example.cqrs.core.commands.CreateAccountCommand;
 import org.example.cqrs.core.commands.CreditAccountCommand;
 import org.example.cqrs.core.enums.AccountStatus;
 import org.example.cqrs.core.enums.Currency;
+import org.example.cqrs.core.events.AccountActivatedEvent;
 import org.example.cqrs.core.events.AccountCreatedEvent;
 import org.example.cqrs.core.events.AccountCreditedEvent;
 import org.example.cqrs.core.services.CurrencyExchangeService;
+import org.example.cqrs.core.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
@@ -54,6 +57,24 @@ public class AccountAggregate {
         this.balance = event.initialBalance();
         this.status = event.status();
         this.currency = event.currency();
+    }
+
+    // ACTIVATION
+    @CommandHandler
+    public void activateAccount(ActivateAccountCommand command) {
+        log.info("------------------------- Activate Command Received -----------------------");
+        if (status.equals(AccountStatus.ACTIVATED))
+            throw new IllegalArgumentException("Account is already activated");
+        if (ObjectUtils.equalsAny(status, AccountStatus.BLOCKED, AccountStatus.SUSPENDED))
+            throw new IllegalArgumentException("Account cannot be activated");
+
+        AggregateLifecycle.apply(new AccountActivatedEvent(command.id()));
+    }
+
+    @EventSourcingHandler
+    public void onActivation(AccountActivatedEvent event) {
+        log.info("------------------------- Activate Event Received -----------------------");
+        this.status = AccountStatus.ACTIVATED;
     }
 
     // CREDIT
