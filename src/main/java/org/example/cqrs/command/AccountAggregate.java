@@ -7,8 +7,13 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.example.cqrs.core.commands.CreateAccountCommand;
+import org.example.cqrs.core.commands.CreditAccountCommand;
 import org.example.cqrs.core.enums.AccountStatus;
+import org.example.cqrs.core.enums.Currency;
 import org.example.cqrs.core.events.AccountCreatedEvent;
+import org.example.cqrs.core.events.AccountCreditedEvent;
+import org.example.cqrs.core.services.CurrencyExchangeService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @Aggregate
@@ -17,25 +22,29 @@ public class AccountAggregate {
     private String id;
     private double balance;
     private AccountStatus status;
-    private String currency;
+    private Currency currency;
+
+    @Autowired
+    private CurrencyExchangeService exchangeService;
 
     // Axon constructor
     public AccountAggregate() {
     }
 
+    // CREATION
     @CommandHandler
     public AccountAggregate(CreateAccountCommand command) {
         log.info("------------------------- Account Command Received -----------------------");
-        if (command.getBalance() < 0)
+        if (command.balance() < 0)
             throw new IllegalArgumentException("Balance cannot be negative");
 
         AggregateLifecycle.apply(
-            new AccountCreatedEvent(
-                command.getId(),
-                command.getBalance(),
-                command.getCurrency(),
-                AccountStatus.CREATED
-        ));
+                new AccountCreatedEvent(
+                        command.id(),
+                        command.balance(),
+                        command.currency(),
+                        AccountStatus.CREATED
+                ));
     }
 
     @EventSourcingHandler
@@ -45,5 +54,24 @@ public class AccountAggregate {
         this.balance = event.initialBalance();
         this.status = event.status();
         this.currency = event.currency();
+    }
+
+    // CREDIT
+    @CommandHandler
+    public AccountAggregate(CreditAccountCommand command) {
+        log.info("------------------------- Credit Command Received -----------------------");
+        if (!status.equals(AccountStatus.ACTIVATED))
+            throw new IllegalArgumentException("Account must be activated to make transactions");
+
+        AggregateLifecycle.apply(new AccountCreditedEvent(
+                command.id(),
+                exchangeService.convert(command.amount(), command.currency(), currency)
+        ));
+    }
+
+    @EventSourcingHandler
+    public void onCredit(AccountCreditedEvent event) {
+        log.info("------------------------- Credit Event Received -----------------------");
+        this.balance += event.balance();
     }
 }
