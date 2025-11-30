@@ -1,5 +1,7 @@
 package org.example.cqrs.command;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -17,9 +19,12 @@ import org.example.cqrs.core.events.AccountCreditedEvent;
 import org.example.cqrs.core.services.CurrencyExchangeService;
 import org.example.cqrs.core.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Aggregate
+@Getter
+@Setter
 public class AccountAggregate {
     @AggregateIdentifier
     private String id;
@@ -53,17 +58,17 @@ public class AccountAggregate {
     @EventSourcingHandler
     public void onCreation(AccountCreatedEvent event) {
         log.info("------------------------- Account Event Received -----------------------");
-        this.id = event.id();
-        this.balance = event.initialBalance();
-        this.status = event.status();
-        this.currency = event.currency();
+        this.setId(event.id());
+        this.setBalance(event.balance());
+        this.setCurrency(event.currency());
+        this.setStatus(event.status());
     }
 
     // ACTIVATION
     @CommandHandler
     public void activateAccount(ActivateAccountCommand command) {
         log.info("------------------------- Activate Command Received -----------------------");
-        if (status.equals(AccountStatus.ACTIVATED))
+        if (this.getStatus().equals(AccountStatus.ACTIVATED))
             throw new IllegalArgumentException("Account is already activated");
         if (ObjectUtils.equalsAny(status, AccountStatus.BLOCKED, AccountStatus.SUSPENDED))
             throw new IllegalArgumentException("Account cannot be activated");
@@ -81,7 +86,7 @@ public class AccountAggregate {
     @CommandHandler
     public AccountAggregate(CreditAccountCommand command) {
         log.info("------------------------- Credit Command Received -----------------------");
-        if (!status.equals(AccountStatus.ACTIVATED))
+        if (!this.getStatus().equals(AccountStatus.ACTIVATED))
             throw new IllegalArgumentException("Account must be activated to make transactions");
 
         AggregateLifecycle.apply(new AccountCreditedEvent(
