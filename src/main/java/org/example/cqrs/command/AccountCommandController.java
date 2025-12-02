@@ -1,11 +1,10 @@
 package org.example.cqrs.command;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.example.cqrs.core.commands.ActivateAccountCommand;
-import org.example.cqrs.core.commands.CreateAccountCommand;
-import org.example.cqrs.core.commands.CreditAccountCommand;
+import org.example.cqrs.core.commands.*;
 import org.example.cqrs.core.dto.account.CreateAccountRequest;
 import org.example.cqrs.core.dto.account.CreditAccountRequest;
+import org.example.cqrs.core.dto.account.DebitAccountRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -29,8 +28,18 @@ public class AccountCommandController {
     }
 
     @PostMapping("/{id}/activate")
-    public CompletableFuture<Object> activateAccount(@PathVariable String id) {
+    public CompletableFuture<String> activateAccount(@PathVariable String id) {
         return commandGateway.send(new ActivateAccountCommand(id));
+    }
+
+    @PostMapping("/{id}/suspend")
+    public CompletableFuture<String> suspendAccount(@PathVariable String id) {
+        return commandGateway.send(new SuspendAccountCommand(id));
+    }
+
+    @PostMapping("/{id}/block")
+    public CompletableFuture<String> blockAccount(@PathVariable String id) {
+        return commandGateway.send(new BlockAccountCommand(id));
     }
 
     @PostMapping("/credit")
@@ -39,4 +48,12 @@ public class AccountCommandController {
                 request.id(), request.amount(), request.currency()
         ));
     }
+
+    @PostMapping("/debit")
+    public CompletableFuture<String> debitAccount(@RequestBody DebitAccountRequest request) {
+        return commandGateway.send(new CreditAccountCommand(
+                request.id(), request.amount(), request.currency()
+        ));
+    }
+
 }
