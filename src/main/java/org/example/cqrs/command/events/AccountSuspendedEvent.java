@@ -1,4 +1,4 @@
-package org.example.cqrs.core.events;
+package org.example.cqrs.command.events;
 
 public record AccountSuspendedEvent(String id) {
 }

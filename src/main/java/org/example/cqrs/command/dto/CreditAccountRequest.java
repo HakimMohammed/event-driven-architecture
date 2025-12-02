@@ -1,4 +1,4 @@
-package org.example.cqrs.core.dto.account;
+package org.example.cqrs.command.dto;
 
 import org.example.cqrs.core.enums.Currency;
 

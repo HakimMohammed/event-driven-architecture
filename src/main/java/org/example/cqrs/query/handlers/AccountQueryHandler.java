@@ -1,9 +1,9 @@
 package org.example.cqrs.query.handlers;
 
 import org.axonframework.queryhandling.QueryHandler;
-import org.example.cqrs.core.entities.Account;
-import org.example.cqrs.core.queries.GetAccountQuery;
-import org.example.cqrs.core.queries.GetAllAccountsQuery;
+import org.example.cqrs.query.entities.Account;
+import org.example.cqrs.query.queries.GetAccountQuery;
+import org.example.cqrs.query.queries.GetAllAccountsQuery;
 import org.example.cqrs.query.repositories.AccountRepository;
 import org.springframework.stereotype.Component;
 

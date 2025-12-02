@@ -1,10 +1,10 @@
-package org.example.cqrs.command;
+package org.example.cqrs.command.controllers;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.example.cqrs.core.commands.*;
-import org.example.cqrs.core.dto.account.CreateAccountRequest;
-import org.example.cqrs.core.dto.account.CreditAccountRequest;
-import org.example.cqrs.core.dto.account.DebitAccountRequest;
+import org.example.cqrs.command.commands.*;
+import org.example.cqrs.command.dto.CreateAccountRequest;
+import org.example.cqrs.command.dto.CreditAccountRequest;
+import org.example.cqrs.command.dto.DebitAccountRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;

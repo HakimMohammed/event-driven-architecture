@@ -1,4 +1,4 @@
-package org.example.cqrs.core.queries;
+package org.example.cqrs.query.queries;
 
 public record GetAccountQuery(String id) {
 }

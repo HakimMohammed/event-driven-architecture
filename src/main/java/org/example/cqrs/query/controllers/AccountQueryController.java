@@ -2,9 +2,9 @@ package org.example.cqrs.query.controllers;
 
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
-import org.example.cqrs.core.entities.Account;
-import org.example.cqrs.core.queries.GetAccountQuery;
-import org.example.cqrs.core.queries.GetAllAccountsQuery;
+import org.example.cqrs.query.entities.Account;
+import org.example.cqrs.query.queries.GetAccountQuery;
+import org.example.cqrs.query.queries.GetAllAccountsQuery;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("/query/account")
 public class AccountQueryController {
-    private QueryGateway queryGateway;
+    private final QueryGateway queryGateway;
 
     public AccountQueryController(QueryGateway queryGateway) {
         this.queryGateway = queryGateway;

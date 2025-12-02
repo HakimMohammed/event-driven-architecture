@@ -1,4 +1,4 @@
-package org.example.cqrs.core.events;
+package org.example.cqrs.command.events;
 
 import org.example.cqrs.core.enums.AccountStatus;
 import org.example.cqrs.core.enums.Currency;

@@ -1,6 +1,6 @@
 package org.example.cqrs.query.repositories;
 
-import org.example.cqrs.core.entities.Transaction;
+import org.example.cqrs.query.entities.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

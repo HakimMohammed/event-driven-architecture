@@ -1,19 +1,18 @@
-package org.example.cqrs.command;
+package org.example.cqrs.command.aggregates;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.example.cqrs.command.commands.*;
+import org.example.cqrs.command.events.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.example.cqrs.core.commands.*;
 import org.example.cqrs.core.enums.*;
-import org.example.cqrs.core.events.*;
 import org.example.cqrs.core.services.CurrencyExchangeService;
 import org.example.cqrs.core.utils.ObjectUtils;
 

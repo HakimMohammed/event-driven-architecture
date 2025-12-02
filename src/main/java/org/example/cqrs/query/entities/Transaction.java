@@ -1,4 +1,4 @@
-package org.example.cqrs.core.entities;
+package org.example.cqrs.query.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
