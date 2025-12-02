@@ -51,7 +51,7 @@ public class AccountCommandController {
 
     @PostMapping("/debit")
     public CompletableFuture<String> debitAccount(@RequestBody DebitAccountRequest request) {
-        return commandGateway.send(new CreditAccountCommand(
+        return commandGateway.send(new DebitAccountCommand(
                 request.id(), request.amount(), request.currency()
         ));
     }
