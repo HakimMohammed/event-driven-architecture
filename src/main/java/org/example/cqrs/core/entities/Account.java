@@ -6,6 +6,7 @@ import org.example.cqrs.core.enums.AccountStatus;
 import org.example.cqrs.core.enums.Currency;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +23,6 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private Currency currency;
     private Instant createdDate;
+    @OneToMany(mappedBy = "account")
+    private List<Transaction> transactions;
 }

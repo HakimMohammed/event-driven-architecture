@@ -1,12 +1,11 @@
 package org.example.cqrs.core.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.cqrs.core.enums.Currency;
 import org.example.cqrs.core.enums.TransactionType;
-
 import java.time.Instant;
-import java.util.Date;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -18,6 +17,7 @@ public class Transaction {
     private double amount;
     private Currency currency;
     @ManyToOne
+    @JsonIgnore
     private Account account;
     @Enumerated(EnumType.STRING)
     private TransactionType type;
