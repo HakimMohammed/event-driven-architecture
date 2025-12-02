@@ -84,6 +84,8 @@ public class AccountAggregate {
         log.info("------------------------- SUSPEND Account Command Received -----------------------");
         if (!this.getStatus().equals(AccountStatus.ACTIVATED))
             throw new IllegalArgumentException("Account must be activated to suspend");
+
+        AggregateLifecycle.apply(new AccountSuspendedEvent(command.id()));
     }
 
     @EventSourcingHandler
@@ -98,6 +100,9 @@ public class AccountAggregate {
         log.info("------------------------- BLOCK Account Command Received -----------------------");
         if (!this.getStatus().equals(AccountStatus.ACTIVATED))
             throw new IllegalArgumentException("Account must be activated to block");
+
+        AggregateLifecycle.apply(new AccountBlockedEvent(command.id()));
+
     }
 
     @EventSourcingHandler
