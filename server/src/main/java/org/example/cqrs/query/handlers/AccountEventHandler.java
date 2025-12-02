@@ -49,6 +49,8 @@ public class AccountEventHandler {
                 .type(TransactionType.CREDIT)
                 .build();
         transactionRepository.save(transaction);
+        account.setBalance(account.getBalance() + event.balance());
+        accountRepository.save(account);
     }
 
     @EventHandler

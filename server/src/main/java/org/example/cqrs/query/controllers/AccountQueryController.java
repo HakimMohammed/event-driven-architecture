@@ -5,16 +5,14 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.example.cqrs.query.entities.Account;
 import org.example.cqrs.query.queries.GetAccountQuery;
 import org.example.cqrs.query.queries.GetAllAccountsQuery;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/query/account")
+@CrossOrigin(origins = "*")
 public class AccountQueryController {
     private final QueryGateway queryGateway;
 
