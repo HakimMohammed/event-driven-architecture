@@ -245,6 +245,17 @@ button {
     margin: 0 auto;
 }
 
+/* Remove spinner on number input on Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Remove spinner on number input on Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  height: auto;
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);
